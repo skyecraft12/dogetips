@@ -1,0 +1,6 @@
+name: DogeTips
+main: us.ignisgaming.spacerocket.dogetips.DogeTips
+softdepend: [Vault]
+version: 1.0
+author: spacerocket
+website: ignisgaming.us/dogetips

@@ -1,0 +1,18 @@
+#Set this to true if you wish to integrate DogeTips with an existing economy plugin that uses Vault.
+use-vault-economy: false
+
+#Ignored if use-vault-economy is true.
+separate-economy:
+  balance-file-name: 'balances.csv'
+
+#API configuration.
+api:
+  api-key: "YOUR_API_KEY_HERE"
+  base-url: "https://block.io/api/v1/"
+  api-key-query: "/?api_key="
+
+#Plugin colors. Use an ampersand for formatting codes if you wish.
+colors:
+  primary: '&e'
+  secondary: '&7'
+  errors: '&c'
