@@ -1,27 +1,23 @@
 package us.ignisgaming.spacerocket.dogetips.eco;
 
-import static us.ignisgaming.spacerocket.dogetips.util.Config.*;
+import static us.ignisgaming.spacerocket.dogetips.util.Config.BALANCE_CSV_FILE;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import us.ignisgaming.spacerocket.dogetips.DogeTips;
-import us.ignisgaming.spacerocket.dogetips.util.Auth;
 import us.ignisgaming.spacerocket.dogetips.util.Config;
+import us.ignisgaming.spacerocket.dogetips.util.FileUtils;
+import us.ignisgaming.spacerocket.dogetips.util.Utils;
 
 public class DogeEcoHandler
 {
 	private File dir, dataFile;
-	private Map<String, Double> balances = new HashMap<>();
+	//Maps Account and Balance
+	private Map<Object, Object> balances = new HashMap<>();
 	
 	/**
 	 * DogeEcoHandler constructor.
@@ -49,23 +45,8 @@ public class DogeEcoHandler
 	 */
 	public void save()
 	{
-		createDataFile();
-		
-		StringBuilder sb = new StringBuilder();
-
-		for(Entry<String, Double> entry : balances.entrySet())
-		{
-			sb.append(entry.getKey() + "," + entry.getValue() + "\n");
-		}
-
-		try(FileOutputStream outStream = new FileOutputStream(dataFile))
-		{
-			outStream.write(sb.toString().getBytes());
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+		FileUtils.createFile(dataFile);;
+		FileUtils.saveMap(dataFile, balances);
 	}
 	
 	/**
@@ -73,9 +54,9 @@ public class DogeEcoHandler
 	 * @param p
 	 * @param d
 	 */
-	public void set(Player p, double d)
+	public void set(String playerID, double d)
 	{
-		balances.put(Auth.getId(p), d);
+		balances.put(playerID, d);
 	}
 	
 	/**
@@ -83,76 +64,18 @@ public class DogeEcoHandler
 	 * @param p
 	 * @return
 	 */
-	public double get(Player p)
+	public double get(String playerID)
 	{
-		return balances.get(Auth.getId(p));
+		return Utils.parseDouble(balances.get(playerID));
 	}
 	
 	/**
 	 * Reads the balance CSV file and stores each value in a Map.
 	 * @return
 	 */
-	private Map<String, Double> getBalances()
+	private Map<Object, Object> getBalances()
 	{
-		createDataFile();
-		Map<String, Double> data = new HashMap<>();
-		
-		try(BufferedReader br = new BufferedReader(new FileReader(dataFile)))
-		{
-			while(true)	//continuously read and parse each line until br.readLine() is null.
-			{
-				String line;
-				
-				if((line = br.readLine()) == null)
-					break;
-				
-				String[] split = line.split(",");
-				
-				if(split.length == 1)
-				{
-					data.put(split[0], 0D);
-				}
-				else if(split.length > 1)
-				{
-					Double value = 0D;
-					
-					try
-					{
-						value = Double.parseDouble(split[1]);
-					}
-					catch(NumberFormatException ignored)
-					{
-
-					}
-					
-					data.put(split[0], value);
-				}
-			}
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return data;
-	}
-	
-	/**
-	 * Creates the balances file if it does not already exist.
-	 * Prints IOException stack trance upon failure.
-	 */
-	private void createDataFile()
-	{
-		if(!dataFile.exists())
-		{
-			try
-			{
-				dataFile.createNewFile();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		FileUtils.createFile(dataFile);
+		return FileUtils.loadMap(dataFile, true);
 	}
 }

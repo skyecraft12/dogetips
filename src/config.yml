@@ -1,6 +1,8 @@
 #Set this to true if you wish to integrate DogeTips with an existing economy plugin that uses Vault.
 use-vault-economy: false
 
+address-file-name: 'addresses.csv'
+
 #Ignored if use-vault-economy is true.
 separate-economy:
   balance-file-name: 'balances.csv'

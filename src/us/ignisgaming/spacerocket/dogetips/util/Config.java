@@ -12,6 +12,7 @@ public class Config
 {
 	//Nodes: Economy
 	public static final String USE_VAULT_ECONOMY = "use-vault-economy";
+	public static final String ADDRESS_CSV_FILE = "address-file-name";
 	public static final String BALANCE_CSV_FILE = "separate-economy.balance-file-name";
 	
 	//Nodes: API

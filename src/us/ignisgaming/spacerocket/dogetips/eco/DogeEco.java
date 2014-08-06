@@ -2,6 +2,8 @@ package us.ignisgaming.spacerocket.dogetips.eco;
 
 import org.bukkit.entity.Player;
 
+import us.ignisgaming.spacerocket.dogetips.util.Auth;
+
 public class DogeEco extends StandardEco
 {
 	private DogeEcoHandler dogeEcoHandler;
@@ -25,7 +27,7 @@ public class DogeEco extends StandardEco
 	@Override
 	public void payPlayer(Player p, double amount)
 	{
-		dogeEcoHandler.set(p, amount);
+		dogeEcoHandler.set(Auth.getId(p), amount);
 	}
 	
 	/**
@@ -37,7 +39,7 @@ public class DogeEco extends StandardEco
 	@Override
 	public double getBalance(Player p)
 	{
-		return dogeEcoHandler.get(p);
+		return dogeEcoHandler.get(Auth.getId(p));
 	}
 	
 	/**
@@ -53,7 +55,7 @@ public class DogeEco extends StandardEco
 	{
 		if(canAfford(getBalance(p), price))
 		{
-			dogeEcoHandler.set(p, price);
+			dogeEcoHandler.set(Auth.getId(p), price);
 			return true;
 		}
 		
@@ -69,7 +71,7 @@ public class DogeEco extends StandardEco
 	@Override
 	public void chargePlayerNoCheck(Player p, double price)
 	{
-		dogeEcoHandler.set(p, price);
+		dogeEcoHandler.set(Auth.getId(p), price);
 	}
 	
 	/**
