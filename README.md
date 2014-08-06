@@ -1,4 +1,4 @@
-dogetips
+DogeTips
 ========
 
 Dogecoin integration with your Minecraft server.
